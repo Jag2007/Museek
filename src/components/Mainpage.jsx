@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Nav from "./NAv";
 
 export default function Main() {
   const navi = useNavigate();

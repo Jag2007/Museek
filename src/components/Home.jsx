@@ -1,3 +1,4 @@
+import Footer from "./Footer";
 import HomeImage from "./HomeImage";
 import MoodMusic from "./MoodMusic";
 import Nav from "./NAv";
@@ -14,6 +15,7 @@ export default function Home() {
       <Recommendation />
       <PopularPlaylist />
       <TrendingNow />
+      <Footer />
     </div>
   );
 }
