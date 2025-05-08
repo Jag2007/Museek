@@ -1,6 +1,8 @@
 import React from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import WorkoutImg from "../Images/Workout.png";
+import ChillImg from "../Images/Chill.jpeg";
 
 const Playlists = () => {
   const playlist = {
@@ -12,7 +14,18 @@ const Playlists = () => {
       { title: "Levitating", artist: "Dua Lipa", time: "3:23" },
       { title: "Save Your Tears", artist: "The Weeknd", time: "3:35" },
     ],
-    suggestions: ["Workout Mix", "Late Night Drive"],
+    suggestions: [
+      {
+        name: "Workout Mix",
+        imageUrl: WorkoutImg,
+        songCount: 4,
+      },
+      {
+        name: "Late Night Drive",
+        imageUrl: ChillImg,
+        songCount: 4,
+      },
+    ],
   };
 
   return (
@@ -78,12 +91,24 @@ const Playlists = () => {
             You might also like
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {playlist.suggestions.map((item, index) => (
+            {playlist.suggestions.map((suggestion, index) => (
               <div
                 key={index}
-                className="bg-slate-800 p-4 rounded-md hover:bg-slate-700 transition"
+                className="relative h-48 rounded-md overflow-hidden cursor-pointer group"
               >
-                {item}
+                <img
+                  src={suggestion.imageUrl}
+                  alt={suggestion.name}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition duration-300"
+                />
+                <div className="absolute inset-0 bg-opacity-50 flex flex-col justify-end p-4">
+                  <h3 className="text-white text-lg font-semibold">
+                    {suggestion.name}
+                  </h3>
+                  <p className="text-white text-sm">
+                    {suggestion.songCount} songs
+                  </p>
+                </div>
               </div>
             ))}
           </div>
