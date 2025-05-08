@@ -29,6 +29,15 @@ const Search = () => {
   return (
     <div>
       <Nav />
+      <div className="px-6 mt-10">
+        <div className="max-w-md mx-auto">
+          <input
+            type="text"
+            placeholder="Search genres, artists, moods..."
+            className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
+          />
+        </div>
+      </div>
       <div className="px-6 py-10 mt-10">
         <h2 className="text-2xl font-bold text-white mb-6">Browse All</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
