@@ -1,5 +1,6 @@
 import React from "react";
-import Nav from "./NAv";
+import Nav from "./Nav";
+// import Nav from "./Nav";
 
 const Playlists = () => {
   return (

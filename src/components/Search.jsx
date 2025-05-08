@@ -1,5 +1,5 @@
 import React from "react";
-import Nav from "./NAv";
+import Nav from "./Nav";
 import ChillImg from "../Images/Chill.jpeg";
 import EnergeticImg from "../Images/Energetic.png";
 import FocusImg from "../Images/Focus.png";

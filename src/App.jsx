@@ -6,6 +6,7 @@ import Signin from "./components/Signin";
 import Home from "./components/Home";
 import Search from "./components/Search";
 import Profile from "./components/Profile";
+import Playlists from "./components/Playlists";
 
 function App() {
   return (
