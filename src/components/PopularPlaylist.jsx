@@ -51,21 +51,23 @@ export default function PopularPlaylist() {
         </a>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="flex overflow-x-auto space-x-6 scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent pb-2">
         {playlists.map((playlist) => (
           <div
             key={playlist.id}
-            className="cursor-pointer group transition-transform duration-300 hover:-translate-y-1"
+            className="min-w-[180px] flex-shrink-0 group cursor-pointer"
           >
-            <div className="overflow-hidden rounded-xl shadow-md">
+            <div className="w-full h-[240px] rounded-xl overflow-hidden shadow-md">
               <img
                 src={playlist.img}
                 alt={playlist.title}
-                className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-70 h-100 object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
             <div className="mt-3">
-              <h3 className="text-base font-semibold">{playlist.title}</h3>
+              <h3 className="text-sm font-semibold truncate">
+                {playlist.title}
+              </h3>
               <p className="text-sm text-gray-400">{playlist.songs} songs</p>
             </div>
           </div>
