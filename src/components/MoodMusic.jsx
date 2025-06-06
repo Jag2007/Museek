@@ -1,14 +1,44 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 
 export default function MoodMusic() {
   const [moods, setMoods] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://mocki.io/v1/0918b0d8-cc7d-407b-bc93-0016a3de76b3")
-      .then((res) => res.json())
-      .then((data) => setMoods(data))
-      .catch((err) => console.error("API fetch error:", err));
-  }, []);
+    const fetchMoods = async () => {
+      try {
+        const response = await fetch('https://mocki.io/v1/72a1e5f5-e98a-4a1e-89bc-76f6299e9bd2');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setMoods(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMoods();
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="px-6 md:px-16 py-10 text-white text-center">
+        Loading moods...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="px-6 md:px-16 py-10 text-white text-center text-red-500">
+        Error: {error.message}
+      </div>
+    );
+  }
 
   return (
     <div className="px-6 md:px-16 py-10 text-white">
@@ -18,20 +48,19 @@ export default function MoodMusic() {
           Find the perfect playlist for any moment
         </p>
       </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {moods.map((mood, index) => (
+        {moods.map((mood) => (
           <div
-            key={index}
+            key={mood.id} {/* Use mood.id from the API as the key */}
             className="relative h-48 rounded-2xl overflow-hidden shadow-lg group cursor-pointer transition-transform duration-300 transform hover:scale-105"
             style={{
-              backgroundImage: `url(${mood.img})`,
+              backgroundImage: `url(${mood.img})`, // Use template literals for dynamic URLs
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-50 transition duration-300" />
+            <div className="absolute inset-0 bg-black bg-opacity-25 group-hover:bg-opacity-50 transition duration-300" />
             <div className="absolute bottom-4 left-4 z-10">
               <h3 className="text-lg font-bold text-white drop-shadow">
                 {mood.title}
