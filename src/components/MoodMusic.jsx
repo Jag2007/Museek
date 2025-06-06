@@ -1,28 +1,15 @@
-import ChillImg from "../Images/Chill.jpeg";
-import EnergeticImg from "../Images/Energetic.png";
-import FocusImg from "../Images/Focus.png";
-import WorkoutImg from "../Images/Workout.png";
-
-const moods = [
-  {
-    title: "Chill",
-    img: ChillImg,
-  },
-  {
-    title: "Energetic",
-    img: EnergeticImg,
-  },
-  {
-    title: "Focus",
-    img: FocusImg,
-  },
-  {
-    title: "Workout",
-    img: WorkoutImg,
-  },
-];
+import { useEffect, useState } from "react";
 
 export default function MoodMusic() {
+  const [moods, setMoods] = useState([]);
+
+  useEffect(() => {
+    fetch("https://mocki.io/v1/0918b0d8-cc7d-407b-bc93-0016a3de76b3")
+      .then((res) => res.json())
+      .then((data) => setMoods(data))
+      .catch((err) => console.error("API fetch error:", err));
+  }, []);
+
   return (
     <div className="px-6 md:px-16 py-10 text-white">
       <div className="mb-6">
@@ -31,6 +18,7 @@ export default function MoodMusic() {
           Find the perfect playlist for any moment
         </p>
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {moods.map((mood, index) => (
           <div
@@ -43,7 +31,7 @@ export default function MoodMusic() {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div className="absolute inset-0 group-hover:bg-opacity-50 transition duration-300" />
+            <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-50 transition duration-300" />
             <div className="absolute bottom-4 left-4 z-10">
               <h3 className="text-lg font-bold text-white drop-shadow">
                 {mood.title}

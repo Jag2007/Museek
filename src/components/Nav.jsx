@@ -33,7 +33,6 @@ export default function Nav() {
       <div className="flex items-center justify-between">
         <div className="text-pink-400 text-2xl font-bold">Museek</div>
 
-        {/* Hamburger Icon */}
         <button
           className="md:hidden text-white text-2xl"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -41,7 +40,6 @@ export default function Nav() {
           {menuOpen ? <FiX /> : <FiMenu />}
         </button>
 
-        {/* Menu - Hidden on small screens, visible on md+ */}
         <div className="hidden md:flex space-x-6 items-center text-white">
           <button
             className="flex items-center space-x-1 hover:text-pink-400"
@@ -81,7 +79,6 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="mt-4 flex flex-col space-y-4 text-white md:hidden">
           <button

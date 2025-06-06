@@ -94,21 +94,17 @@ const Playlists = () => {
             {playlist.suggestions.map((suggestion, index) => (
               <div
                 key={index}
-                className="relative h-48 rounded-md overflow-hidden cursor-pointer group"
+                className="bg-slate-800 p-4 rounded-md hover:bg-slate-700 transition"
               >
                 <img
                   src={suggestion.imageUrl}
                   alt={suggestion.name}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition duration-300"
+                  className="w-full h-48 object-cover rounded-md mb-2"
                 />
-                <div className="absolute inset-0 bg-opacity-50 flex flex-col justify-end p-4">
-                  <h3 className="text-white text-lg font-semibold">
-                    {suggestion.name}
-                  </h3>
-                  <p className="text-white text-sm">
-                    {suggestion.songCount} songs
-                  </p>
-                </div>
+                <h3 className="text-lg font-semibold">{suggestion.name}</h3>
+                <p className="text-sm text-gray-400">
+                  {suggestion.songCount} songs
+                </p>
               </div>
             ))}
           </div>
