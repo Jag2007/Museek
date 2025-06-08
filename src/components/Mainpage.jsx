@@ -5,7 +5,6 @@ export default function Main() {
 
   return (
     <>
-      {/* --- Starry Background Styles --- */}
       <style>{`
         .background-stars {
           position: fixed;
@@ -69,7 +68,7 @@ export default function Main() {
 
       <div className="min-h-screen flex flex-col items-center justify-center bg-transparent text-white px-4">
         <h1 className="text-4xl font-bold text-purple-400 mb-2">Museek</h1>
-        <p className="text-gray-300 mb-6">Your music space. Enjoy!!</p>
+        <p className="text-gray-300 mb-6">Your own music space. Enjoy!!</p>
 
         <div className="flex gap-4">
           <button
