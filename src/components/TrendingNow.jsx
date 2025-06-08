@@ -1,43 +1,52 @@
-import LevitatingImg from "../Images/levitating.webp";
-import LavenderImg from "../Images/lavender.jpeg";
-import SaveTearsImg from "../Images/Blindlights.jpeg";
-import NDAImg from "../Images/nda.jpeg";
-
-const trendingSongs = [
-  {
-    title: "Levitating",
-    artist: "Dua Lipa",
-    time: "3:23",
-    img: LevitatingImg,
-  },
-  {
-    title: "Lavender Haze",
-    artist: "Taylor Swift",
-    time: "3:07",
-    img: LavenderImg,
-  },
-  {
-    title: "Save Your Tears",
-    artist: "The Weeknd",
-    time: "3:35",
-    img: SaveTearsImg,
-  },
-  {
-    title: "NDA",
-    artist: "Billie Eilish",
-    time: "3:18",
-    img: NDAImg,
-  },
-];
+import React, { useEffect, useState } from "react";
 
 export default function TrendingNow() {
+  const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const response = await fetch(
+          "https://mocki.io/v1/1da313f7-0bb1-4dc0-9895-ac4ef1b388e4"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch trending songs");
+        }
+        const data = await response.json();
+        setSongs(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSongs();
+  }, []);
+
+  if (loading)
+    return (
+      <div className="text-white px-6 py-10 text-center text-lg">
+        Loading trending songs...
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="text-red-500 px-6 py-10 text-center text-lg">
+        Error: {error}
+      </div>
+    );
+
   return (
     <div className="px-6 md:px-16 py-10 text-white bg-[#0f172a]">
       <h2 className="text-2xl font-bold mb-1">Trending Now</h2>
       <p className="text-gray-400 text-sm mb-6">What's hot right now</p>
 
       <div className="space-y-4">
-        {trendingSongs.map((song, index) => (
+        {songs.map((song, index) => (
           <div
             key={index}
             className="flex items-center justify-between hover:bg-gray-800 p-2 rounded-lg transition"
