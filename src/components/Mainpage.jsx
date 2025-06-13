@@ -16,17 +16,36 @@ export default function Main() {
           overflow: hidden;
           z-index: -1;
         }
+
         .star {
           position: absolute;
           background: white;
           border-radius: 50%;
           opacity: 0.8;
-          animation: floatStar linear infinite;
+          animation: driftStar ease-in-out infinite;
         }
-        @keyframes floatStar {
-          0% { transform: translateY(0) scale(1); opacity: 0.5; }
-          50% { transform: translateY(-30px) scale(1.2); opacity: 1; }
-          100% { transform: translateY(0) scale(1); opacity: 0.5; }
+
+        @keyframes driftStar {
+          0% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+          }
+          25% {
+            transform: translate(5px, -3px) scale(1.1);
+            opacity: 1;
+          }
+          50% {
+            transform: translate(-4px, 4px) scale(1);
+            opacity: 0.7;
+          }
+          75% {
+            transform: translate(3px, -2px) scale(1.2);
+            opacity: 0.9;
+          }
+          100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+          }
         }
       `}</style>
 
@@ -34,9 +53,10 @@ export default function Main() {
         {[...Array(80)].map((_, i) => {
           const top = Math.random() * 100;
           const left = Math.random() * 100;
-          const duration = 8 + Math.random() * 5;
+          const duration = 10 + Math.random() * 10;
           const delay = Math.random() * 10;
           const size = 1 + Math.random() * 2;
+
           return (
             <div
               key={i}
