@@ -1,166 +1,187 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
-import LevitatingImg from "../Images/levitating.webp";
-import LavenderImg from "../Images/lavender.jpeg";
-import SaveTearsImg from "../Images/Blindlights.jpeg";
-import NDAImg from "../Images/nda.jpeg";
-import Way2sexyImg from "../Images/Way2sexy.jpg";
-import WorkoutImg from "../Images/Workout.png";
-import Billi from "../Images/Billi.jpg";
-import Dua from "../Images/Dua.jpeg";
-import Taylor from "../Images/Taylor.webp";
-import Pro from "../Images/profile.jpg";
-const userProfile = {
-  name: "Jahnavi",
-  username: "@quirkymiss",
-  profilePicture: Pro,
-  recentlyPlayed: [
-    {
-      title: "Blinding Lights",
-      artist: "The Weeknd",
-      imageUrl: SaveTearsImg,
-    },
-    {
-      title: "Way 2 Sexy",
-      artist: "Drake",
-      imageUrl: Way2sexyImg,
-    },
-    {
-      title: "Lavender Haze",
-      artist: "Taylor Swift",
-      imageUrl: LavenderImg,
-    },
-  ],
-  playlists: [
-    {
-      name: "Chill Vibes",
-      imageUrl: LevitatingImg,
-      songCount: 4,
-    },
-    {
-      name: "Workout Mix",
-      imageUrl: WorkoutImg,
-      songCount: 4,
-    },
-    {
-      name: "Late Night Drive",
-      imageUrl: NDAImg,
-      songCount: 4,
-    },
-  ],
-  followedArtists: [
-    {
-      name: "Taylor Swift",
-      imageUrl: Taylor,
-      type: "Artist",
-    },
-    {
-      name: "Billie Eilish",
-      imageUrl: Billi,
-      type: "Artist",
-    },
-    {
-      name: "Dua Lipa",
-      imageUrl: Dua,
-      type: "Artist",
-    },
-  ],
-};
 
-const Profile = () => {
+export default function Profile() {
+  const [moods, setMoods] = useState([]);
+  const [recs, setRecs] = useState([]);
+  const [tab, setTab] = useState("Overview");
+
+  useEffect(() => {
+    async function fetchData() {
+      const moodRes = await fetch(
+        "https://mocki.io/v1/72a1e5f5-e98a-4a1e-89bc-76f6299e9bd2"
+      );
+      const recRes = await fetch(
+        "https://mocki.io/v1/acb7ed6b-40b0-4de8-b097-6df54ad962a1"
+      );
+
+      const moodData = await moodRes.json();
+      const recData = await recRes.json();
+
+      setMoods(moodData);
+      setRecs(recData);
+    }
+
+    fetchData();
+  }, []);
+
+  const playlists = moods;
+  const recent = recs.slice(0, 6);
+  const artists = recs.slice(6, 12);
+
+  const TabButton = ({ name }) => (
+    <button
+      onClick={() => setTab(name)}
+      className={`pb-2 px-4 text-lg ${
+        tab === name
+          ? "border-b-2 border-purple-500 text-white"
+          : "text-gray-400"
+      }`}
+    >
+      {name}
+    </button>
+  );
+
+  const Card = ({ img, title, sub }) => (
+    <div className="bg-gray-800 rounded-xl p-3 hover:bg-gray-700 transition-all">
+      <img
+        src={img}
+        alt={title}
+        className="w-full h-40 object-cover rounded-lg mb-2"
+      />
+      <p className="text-white font-semibold truncate">{title}</p>
+      <p className="text-sm text-gray-400">{sub}</p>
+    </div>
+  );
+
+  const ArtistCard = ({ img, title }) => (
+    <div className="flex flex-col items-center text-center p-4 bg-gray-800 rounded-lg hover:bg-gray-700">
+      <img src={img} alt={title} className="w-24 h-24 rounded-full mb-2" />
+      <p className="text-white font-medium">{title}</p>
+    </div>
+  );
+
   return (
-    <div className="bg-black text-white min-h-screen flex flex-col">
+    <div className="bg-black text-white min-h-screen font-sans">
       <Nav />
-      <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 flex items-center">
+
+      <div className="p-6 flex flex-col items-center">
         <img
-          src={userProfile.profilePicture}
+          src={recs[0]?.img}
           alt="Profile"
-          className="w-24 h-24 rounded-full border-4 border-white"
+          className="w-32 h-32 rounded-full border-4 border-purple-500 mb-4"
         />
-        <div className="ml-4">
-          <h1 className="text-2xl font-bold">{userProfile.name}</h1>
-          <p className="text-sm">{userProfile.username}</p>
-        </div>
+        <h1 className="text-3xl font-bold">Jahnavi</h1>
+        <p className="text-gray-400">@quirkymiss</p>
       </div>
 
-      <div className="bg-gray-800 px-6 py-4">
-        <div className="flex space-x-4">
-          <button className="bg-gray-700 px-4 py-2 rounded">Overview</button>
-          <button className="hover:bg-gray-700 px-4 py-2 rounded">
-            Favorites
-          </button>
-          <button className="hover:bg-gray-700 px-4 py-2 rounded">
-            Playlists
-          </button>
-          <button className="hover:bg-gray-700 px-4 py-2 rounded">
-            Following
-          </button>
-          <button className="hover:bg-gray-700 px-4 py-2 rounded">
-            Settings
-          </button>
-        </div>
+      <div className="px-8 border-b border-gray-700 flex gap-6 justify-start">
+        <TabButton name="Overview" />
+        <TabButton name="Playlists" />
+        <TabButton name="Recently Played" />
+        <TabButton name="Following" />
       </div>
 
-      <div className="bg-gray-900 px-6 py-6">
-        <h2 className="text-xl font-semibold mb-4">Recently Played</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {userProfile.recentlyPlayed.map((song, index) => (
-            <div key={index} className="bg-gray-800 rounded-md overflow-hidden">
-              <img
-                src={song.imageUrl}
-                alt={song.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-3">
-                <h3 className="text-lg font-bold">{song.title}</h3>
-                <p className="text-sm text-gray-400">{song.artist}</p>
+      <div className="p-8 grid grid-cols-1 gap-10">
+        {tab === "Overview" && (
+          <>
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-purple-400">
+                Recently Played
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {recent.map((item, i) => (
+                  <Card
+                    key={i}
+                    img={item.img}
+                    title={item.title}
+                    sub={item.artist}
+                  />
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="bg-gray-900 px-6 py-6">
-        <h2 className="text-xl font-semibold mb-4">Your Playlists</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {userProfile.playlists.map((playlist, index) => (
-            <div key={index} className="bg-gray-800 rounded-md overflow-hidden">
-              <img
-                src={playlist.imageUrl}
-                alt={playlist.name}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-3">
-                <h3 className="text-lg font-bold">{playlist.name}</h3>
-                <p className="text-sm text-gray-400">
-                  {playlist.songCount} songs
-                </p>
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-purple-400">
+                Your Playlists
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {playlists.map((item, i) => (
+                  <Card
+                    key={i}
+                    img={item.img}
+                    title={item.title}
+                    sub="Playlist"
+                  />
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-purple-400">
+                Following
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
+                {artists.map((a, i) => (
+                  <ArtistCard key={i} img={a.img} title={a.artist || a.title} />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {tab === "Playlists" && (
+          <div>
+            <h2 className="text-xl font-bold mb-4 text-purple-400">
+              Your Playlists
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {playlists.map((item, i) => (
+                <Card
+                  key={i}
+                  img={item.img}
+                  title={item.title}
+                  sub="Playlist"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === "Recently Played" && (
+          <div>
+            <h2 className="text-xl font-bold mb-4 text-purple-400">
+              Recently Played
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {recent.map((item, i) => (
+                <Card
+                  key={i}
+                  img={item.img}
+                  title={item.title}
+                  sub={item.artist}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === "Following" && (
+          <div>
+            <h2 className="text-xl font-bold mb-4 text-purple-400">
+              Following
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
+              {artists.map((a, i) => (
+                <ArtistCard key={i} img={a.img} title={a.artist || a.title} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="bg-gray-900 px-6 py-6">
-        <h2 className="text-xl font-semibold mb-4">Artists You Follow</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
-          {userProfile.followedArtists.map((artist, index) => (
-            <div key={index} className="bg-gray-800 rounded-md text-center p-4">
-              <img
-                src={artist.imageUrl}
-                alt={artist.name}
-                className="w-24 h-24 rounded-full mx-auto mb-2 object-cover"
-              />
-              <h3 className="text-lg font-bold">{artist.name}</h3>
-              <p className="text-sm text-gray-400">{artist.type}</p>
-            </div>
-          ))}
-        </div>
-      </div>
       <Footer />
     </div>
   );
-};
-
-export default Profile;
+}
