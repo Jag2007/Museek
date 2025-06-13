@@ -16,7 +16,6 @@ export default function Main() {
           overflow: hidden;
           z-index: -1;
         }
-
         .star {
           position: absolute;
           background: white;
@@ -24,20 +23,10 @@ export default function Main() {
           opacity: 0.8;
           animation: floatStar linear infinite;
         }
-
         @keyframes floatStar {
-          0% {
-            transform: translateY(0) scale(1);
-            opacity: 0.5;
-          }
-          50% {
-            transform: translateY(-30px) scale(1.2);
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(0) scale(1);
-            opacity: 0.5;
-          }
+          0% { transform: translateY(0) scale(1); opacity: 0.5; }
+          50% { transform: translateY(-30px) scale(1.2); opacity: 1; }
+          100% { transform: translateY(0) scale(1); opacity: 0.5; }
         }
       `}</style>
 
@@ -48,7 +37,6 @@ export default function Main() {
           const duration = 8 + Math.random() * 5;
           const delay = Math.random() * 10;
           const size = 1 + Math.random() * 2;
-
           return (
             <div
               key={i}
@@ -66,7 +54,7 @@ export default function Main() {
         })}
       </div>
 
-      <div className="min-h-screen flex flex-col items-center justify-center bg-transparent text-white px-4">
+      <div className="min-h-screen flex flex-col items-center justify-center text-white px-4">
         <h1 className="text-4xl font-bold text-purple-400 mb-2">Museek</h1>
         <p className="text-gray-300 mb-6">Your own music space. Enjoy!!</p>
 
