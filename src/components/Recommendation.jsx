@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 export default function Recommendation() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [playingId, setPlayingId] = useState(null);
+  const audioRef = useRef(new Audio());
 
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
         const response = await fetch(
-          "https://mocki.io/v1/acb7ed6b-40b0-4de8-b097-6df54ad962a1"
+          "https://mocki.io/v1/551be12f-036e-475f-bdbf-c5015549326a"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch recommendations");
@@ -25,6 +27,44 @@ export default function Recommendation() {
 
     fetchRecommendations();
   }, []);
+
+  const handlePlayPause = async (item) => {
+    const audio = audioRef.current;
+
+    try {
+      if (playingId === item.id) {
+        // Pause current song
+        audio.pause();
+        setPlayingId(null);
+      } else {
+        // Stop any currently playing audio
+        audio.pause();
+
+        // Set new audio source
+        audio.src = item.music;
+        audio.volume = 1.0; // Full volume
+        audio.preload = "auto";
+
+        // Add event listeners
+        audio.onended = () => {
+          setPlayingId(null);
+        };
+
+        audio.onerror = (e) => {
+          console.error("Audio error:", e);
+          setPlayingId(null);
+        };
+
+        // Load and play the audio
+        await audio.load();
+        await audio.play();
+        setPlayingId(item.id);
+      }
+    } catch (err) {
+      console.error("Audio playback error:", err);
+      setPlayingId(null);
+    }
+  };
 
   if (loading)
     return (
@@ -61,9 +101,54 @@ export default function Recommendation() {
               <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
             </div>
 
-            <div className="mt-3 text-center">
-              <h3 className="text-base font-semibold truncate">{item.title}</h3>
-              <p className="text-gray-400 text-sm truncate">{item.artist}</p>
+            <div className="mt-3 flex flex-col items-center text-center">
+              <div className="flex items-center justify-center gap-2">
+                <div>
+                  <h3 className="text-base font-semibold truncate">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm truncate">
+                    {item.artist}
+                  </p>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePlayPause(item);
+                  }}
+                  className={`ml-2 p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
+                    playingId === item.id
+                      ? "bg-pink-600 text-white shadow-lg"
+                      : "bg-purple-500 text-white shadow-md"
+                  }`}
+                >
+                  {playingId === item.id ? (
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         ))}
