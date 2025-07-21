@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import StarfieldBackground from "./StarfieldBackground";
+import StarfieldBackground from "../components/StarfieldBackground";
 import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,

@@ -1,28 +1,26 @@
+import React from "react";
+
 export default function HomeImage() {
   return (
-    <div className="bg-gradient-to-br from-[#001440] via-[#5f0466] to-[#1c052f] text-white p-8 rounded-2xl flex items-center justify-between max-w-6xl mx-auto mt-10 shadow-xl transition duration-300">
-      <div className="max-w-md">
-        <div className="mb-2">
-          <button className="bg-[#5a189a] text-sm text-white px-3 py-1 rounded-full">
-            ✨ New Feature
-          </button>
-        </div>
-        <div className="text-3xl font-bold leading-snug mb-2">
-          Discover music that matches your mood
-        </div>
-        <div className="text-sm text-purple-200 mb-4">
-          Personalized recommendations based on your listening habits and
-          preferences.
-        </div>
-        <button className="bg-white text-black px-5 py-2 rounded-full font-medium hover:bg-gray-200 transition">
+    <div className="bg-[#1a1e2a] text-white p-6 sm:p-10 lg:p-12 rounded-2xl flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto mt-12 mb-16 shadow-2xl transition-all duration-300 border border-[#2a3142] hover:border-blue-500/20">
+      <div className="max-w-md mb-8 md:mb-0">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          Discover Music That Matches Your Mood
+        </h1>
+        <p className="text-base sm:text-lg text-gray-300 mb-6 max-w-lg">
+          Get personalized album recommendations tailored to your listening
+          habits.
+        </p>
+        <button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-full font-medium text-base hover:from-blue-600 hover:to-purple-600 transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
           Start Listening
         </button>
       </div>
-      <div className="hidden md:block w-1/2">
+      <div className="relative w-full md:w-1/2">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#121826]/80 to-transparent rounded-2xl"></div>
         <img
           src="https://wallpapersok.com/images/hd/neon-music-art-elrh6xcvqpnv09d9.jpg"
-          alt="concert"
-          className="rounded-2xl object-cover h-full w-full"
+          alt="Concert scene with vibrant neon lights"
+          className="rounded-2xl object-cover h-64 sm:h-80 md:h-96 w-full"
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import StarfieldBackground from "./StarfieldBackground";
+import StarfieldBackground from "../components/StarfieldBackground";
 
 export default function Main() {
   const navi = useNavigate();

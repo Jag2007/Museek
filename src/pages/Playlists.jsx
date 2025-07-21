@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Nav from "./Nav";
-import Footer from "./Footer";
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 
 export default function Playlists() {
   const [moods, setMoods] = useState([]);

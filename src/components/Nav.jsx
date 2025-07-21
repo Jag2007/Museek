@@ -29,91 +29,94 @@ export default function Nav() {
   }
 
   return (
-    <nav className="bg-[#0F172A] shadow-md px-6 py-4">
+    <nav className="bg-[#1a1e2a] px-4 sm:px-6 lg:px-8 py-4 shadow-lg border-b border-[#2a3142] sticky top-0 z-50">
       <div className="flex items-center justify-between">
-        <div className="text-pink-400 text-2xl font-bold">Museek</div>
+        <div className="text-2xl sm:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          Museek
+        </div>
 
         <button
-          className="md:hidden text-white text-2xl"
+          className="md:hidden text-white text-2xl p-2 rounded-full hover:bg-[#222733] transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           {menuOpen ? <FiX /> : <FiMenu />}
         </button>
 
-        <div className="hidden md:flex space-x-6 items-center text-white">
+        <div className="hidden md:flex items-center space-x-8 text-gray-100">
           <button
-            className="flex items-center space-x-1 hover:text-pink-400"
+            className="flex items-center space-x-2 text-sm font-semibold hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-2 py-1"
             onClick={handleHome}
           >
-            <FaHome />
+            <FaHome className="w-5 h-5" />
             <span>Home</span>
           </button>
           <button
-            className="flex items-center space-x-1 hover:text-pink-400"
+            className="flex items-center space-x-2 text-sm font-semibold hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-2 py-1"
             onClick={handleSearch}
           >
-            <FaSearch />
+            <FaSearch className="w-5 h-5" />
             <span>Search</span>
           </button>
           <button
-            className="flex items-center space-x-1 hover:text-pink-400"
+            className="flex items-center space-x-2 text-sm font-semibold hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-2 py-1"
             onClick={handlePlaylist}
           >
-            <FaList />
+            <FaList className="w-5 h-5" />
             <span>Playlists</span>
           </button>
           <button
-            className="flex items-center space-x-1 hover:text-pink-400"
+            className="flex items-center space-x-2 text-sm font-semibold hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-2 py-1"
             onClick={handleProfile}
           >
-            <FaUser />
+            <FaUser className="w-5 h-5" />
             <span>Profile</span>
           </button>
           <button
             onClick={handleLogin}
-            className="flex items-center space-x-1 text-white bg-gradient-to-r from-pink-500 to-purple-500 px-4 py-2 rounded-lg hover:scale-105 transition-transform"
+            className="flex items-center space-x-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 rounded-full hover:from-blue-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            <FiLogIn />
+            <FiLogIn className="w-5 h-5" />
             <span>Login</span>
           </button>
         </div>
       </div>
 
       {menuOpen && (
-        <div className="mt-4 flex flex-col space-y-4 text-white md:hidden">
+        <div className="mt-4 flex flex-col space-y-3 text-gray-100 md:hidden animate-slide-in">
           <button
-            className="flex items-center space-x-2 hover:text-pink-400"
+            className="flex items-center space-x-2 text-base font-semibold hover:text-blue-300 transition-colors py-2 px-3 rounded-lg hover:bg-[#222733] focus:outline-none focus:ring-2 focus:ring-blue-400"
             onClick={handleHome}
           >
-            <FaHome />
+            <FaHome className="w-5 h-5" />
             <span>Home</span>
           </button>
           <button
-            className="flex items-center space-x-2 hover:text-pink-400"
+            className="flex items-center space-x-2 text-base font-semibold hover:text-blue-300 transition-colors py-2 px-3 rounded-lg hover:bg-[#222733] focus:outline-none focus:ring-2 focus:ring-blue-400"
             onClick={handleSearch}
           >
-            <FaSearch />
+            <FaSearch className="w-5 h-5" />
             <span>Search</span>
           </button>
           <button
-            className="flex items-center space-x-2 hover:text-pink-400"
+            className="flex items-center space-x-2 text-base font-semibold hover:text-blue-300 transition-colors py-2 px-3 rounded-lg hover:bg-[#222733] focus:outline-none focus:ring-2 focus:ring-blue-400"
             onClick={handlePlaylist}
           >
-            <FaList />
+            <FaList className="w-5 h-5" />
             <span>Playlists</span>
           </button>
           <button
-            className="flex items-center space-x-2 hover:text-pink-400"
+            className="flex items-center space-x-2 text-base font-semibold hover:text-blue-300 transition-colors py-2 px-3 rounded-lg hover:bg-[#222733] focus:outline-none focus:ring-2 focus:ring-blue-400"
             onClick={handleProfile}
           >
-            <FaUser />
+            <FaUser className="w-5 h-5" />
             <span>Profile</span>
           </button>
           <button
             onClick={handleLogin}
-            className="flex items-center space-x-2 text-white bg-gradient-to-r from-pink-500 to-purple-500 px-4 py-2 rounded-lg hover:scale-105 transition-transform"
+            className="flex items-center space-x-2 text-base font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 rounded-full hover:from-blue-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            <FiLogIn />
+            <FiLogIn className="w-5 h-5" />
             <span>Login</span>
           </button>
         </div>

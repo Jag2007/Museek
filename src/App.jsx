@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Main from "./components/Mainpage";
-import Login from "./components/Login";
-import Signin from "./components/Signin";
-import Home from "./components/Home";
-import Search from "./components/Search";
-import Profile from "./components/Profile";
-import Playlists from "./components/Playlists";
+import Main from "./pages/Mainpage";
+import Login from "./pages/Login";
+import Signin from "./pages/Signin";
+import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Profile from "./pages/Profile";
+import Playlists from "./pages/Playlists";
 
 function App() {
   return (

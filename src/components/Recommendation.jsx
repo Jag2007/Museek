@@ -1,23 +1,31 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Recommendation() {
-  const [items, setItems] = useState([]);
+  const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [playingId, setPlayingId] = useState(null);
-  const audioRef = useRef(new Audio());
 
   useEffect(() => {
-    const fetchRecommendations = async () => {
+    const fetchTopAlbums = async () => {
       try {
         const response = await fetch(
-          "https://mocki.io/v1/551be12f-036e-475f-bdbf-c5015549326a"
+          "https://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=Cher&api_key=93103733c58ba7d7923970eaac3637e2&format=json"
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch recommendations");
-        }
+        if (!response.ok) throw new Error("Failed to fetch albums");
+
         const data = await response.json();
-        setItems(data);
+        const topAlbums = data?.topalbums?.album || [];
+
+        const filteredAlbums = topAlbums
+          .map((album, index) => ({
+            id: album.mbid || index,
+            name: album.name,
+            listeners: album.listeners,
+            url: album.url,
+          }))
+          .slice(0, 10); // Only top 10
+
+        setAlbums(filteredAlbums);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -25,134 +33,85 @@ export default function Recommendation() {
       }
     };
 
-    fetchRecommendations();
+    fetchTopAlbums();
   }, []);
-
-  const handlePlayPause = async (item) => {
-    const audio = audioRef.current;
-
-    try {
-      if (playingId === item.id) {
-        // Pause current song
-        audio.pause();
-        setPlayingId(null);
-      } else {
-        // Stop any currently playing audio
-        audio.pause();
-
-        // Set new audio source
-        audio.src = item.music;
-        audio.volume = 1.0; // Full volume
-        audio.preload = "auto";
-
-        // Add event listeners
-        audio.onended = () => {
-          setPlayingId(null);
-        };
-
-        audio.onerror = (e) => {
-          console.error("Audio error:", e);
-          setPlayingId(null);
-        };
-
-        // Load and play the audio
-        await audio.load();
-        await audio.play();
-        setPlayingId(item.id);
-      }
-    } catch (err) {
-      console.error("Audio playback error:", err);
-      setPlayingId(null);
-    }
-  };
 
   if (loading)
     return (
-      <div className="text-white px-6 py-10 text-center text-lg">
-        Loading recommendations...
+      <div className="text-white px-6 py-24 text-center text-xl animate-pulse flex items-center justify-center gap-2">
+        <span className="text-2xl">🎶</span> Fetching top albums for you...
       </div>
     );
+
   if (error)
     return (
-      <div className="text-red-500 px-6 py-10 text-center text-lg">
-        Error: {error}
+      <div className="text-red-400 px-6 py-24 text-center text-xl flex items-center justify-center gap-2">
+        <span className="text-2xl">❌</span> Error: {error}
       </div>
     );
 
   return (
-    <div className="px-4 md:px-16 py-10 text-white">
-      <h2 className="text-3xl font-extrabold mb-2 tracking-tight">
-        🎧 Recommended For You
+    <section className="px-4 sm:px-8 md:px-12 lg:px-16 py-16 text-white min-h-screen">
+      {/* Improved typography and spacing for the header */}
+      <h2 className="text-4xl sm:text-5xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+        🎧 Top Albums by Cher
       </h2>
-      <p className="text-gray-400 text-base mb-8">
-        Based on your recent listening history
+      <p className="text-gray-300 text-base sm:text-lg mb-10 max-w-2xl">
+        Discover the most popular albums by Cher, based on Last.fm data
       </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="group cursor-pointer transition-transform duration-300 hover:-translate-y-1"
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        {albums.map((album) => (
+          <a
+            key={album.id}
+            href={album.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-2xl bg-[#1a1e2a] p-5 hover:bg-[#222733] transition-all duration-300 cursor-pointer hover:shadow-2xl hover:scale-105 border border-[#2a3142] hover:border-blue-500/50 relative overflow-hidden"
           >
-            <div
-              className="aspect-square rounded-2xl overflow-hidden shadow-lg bg-cover bg-center relative group-hover:shadow-2xl transition-all duration-300"
-              style={{ backgroundImage: `url(${item.img})` }}
-            >
-              <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
-            </div>
+            {/* Subtle gradient overlay on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-            <div className="mt-3 flex flex-col items-center text-center">
-              <div className="flex items-center justify-center gap-2">
-                <div>
-                  <h3 className="text-base font-semibold truncate">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm truncate">
-                    {item.artist}
-                  </p>
-                </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePlayPause(item);
-                  }}
-                  className={`ml-2 p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
-                    playingId === item.id
-                      ? "bg-pink-600 text-white shadow-lg"
-                      : "bg-purple-500 text-white shadow-md"
-                  }`}
-                >
-                  {playingId === item.id ? (
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  )}
-                </button>
-              </div>
+            <div className="relative text-xl font-semibold mb-3 truncate text-gray-100 group-hover:text-blue-300 transition-colors">
+              {album.name}
             </div>
-          </div>
+            <div className="relative text-gray-400 text-sm mb-4">
+              <span className="flex items-center gap-1">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
+                {album.listeners} listeners
+              </span>
+            </div>
+            <div className="relative text-blue-400 text-sm font-medium group-hover:text-blue-300 transition-colors flex items-center gap-1">
+              View on Last.fm
+              <svg
+                className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </div>
+          </a>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
