@@ -7,23 +7,30 @@ export default function Main() {
   return (
     <>
       <StarfieldBackground />
-      <div className="min-h-screen flex flex-col items-center justify-center text-white px-4">
-        <h1 className="text-4xl font-bold text-purple-400 mb-2">Museek</h1>
-        <p className="text-gray-300 mb-6">Your own music space. Enjoy!!</p>
-
-        <div className="flex gap-4">
-          <button
-            onClick={() => navi("/login")}
-            className="px-4 py-2 rounded bg-purple-600 hover:bg-purple-700 transition duration-200"
-          >
-            Login
-          </button>
-          <button
-            onClick={() => navi("/signup")}
-            className="px-4 py-2 rounded bg-pink-600 hover:bg-pink-700 transition duration-200"
-          >
-            Sign up
-          </button>
+      <div className="min-h-screen flex flex-col items-center justify-center text-white px-4 sm:px-6 lg:px-8">
+        <div className="bg-[#1a1e2a] p-8 sm:p-10 lg:p-12 rounded-2xl max-w-lg w-full z-10 shadow-2xl border border-[#2a3142] hover:border-blue-500/20 transition-all duration-300 text-center">
+          <h1 className="text-5xl sm:text-4xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight">
+            Museek
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-md mx-auto">
+            Discover and enjoy music tailored to your taste
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => navi("/login")}
+              className="px-5 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold text-lg hover:from-blue-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              aria-label="Go to login page"
+            >
+              Login
+            </button>
+            <button
+              onClick={() => navi("/signup")}
+              className="px-5 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold text-lg hover:from-blue-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              aria-label="Go to signup page"
+            >
+              Sign Up
+            </button>
+          </div>
         </div>
       </div>
     </>
