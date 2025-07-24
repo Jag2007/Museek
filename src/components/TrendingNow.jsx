@@ -9,7 +9,7 @@ export default function TrendingNow() {
     const fetchSongs = async () => {
       try {
         const response = await fetch(
-          "https://mocki.io/v1/1da313f7-0bb1-4dc0-9895-ac4ef1b388e4"
+          "https://mocki.io/v1/67658375-141f-4f7b-9fa3-a38bd2797a61"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch trending songs");
