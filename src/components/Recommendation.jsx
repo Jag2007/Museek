@@ -23,7 +23,7 @@ export default function Recommendation() {
             listeners: album.listeners,
             url: album.url,
           }))
-          .slice(0, 10); // Only top 10
+          .slice(0, 10);
 
         setAlbums(filteredAlbums);
       } catch (err) {
@@ -52,8 +52,7 @@ export default function Recommendation() {
 
   return (
     <section className="px-4 sm:px-8 md:px-12 lg:px-16 py-16 text-white min-h-screen">
-      {/* Improved typography and spacing for the header */}
-      <h2 className="text-4xl sm:text-5xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+      <h2 className="text-3xl sm:text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
         🎧 Top Albums by Cher
       </h2>
       <p className="text-gray-300 text-base sm:text-lg mb-10 max-w-2xl">
@@ -69,7 +68,6 @@ export default function Recommendation() {
             rel="noopener noreferrer"
             className="group rounded-2xl bg-[#1a1e2a] p-5 hover:bg-[#222733] transition-all duration-300 cursor-pointer hover:shadow-2xl hover:scale-105 border border-[#2a3142] hover:border-blue-500/50 relative overflow-hidden"
           >
-            {/* Subtle gradient overlay on hover */}
             <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
             <div className="relative text-xl font-semibold mb-3 truncate text-gray-100 group-hover:text-blue-300 transition-colors">
