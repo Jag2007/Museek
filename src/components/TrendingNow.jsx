@@ -42,8 +42,12 @@ export default function TrendingNow() {
 
   return (
     <div className="px-6 md:px-16 py-10 text-white bg-[#0f172a]">
-      <h2 className="text-2xl font-bold mb-1">Trending Now</h2>
-      <p className="text-gray-400 text-sm mb-6">What's hot right now</p>
+      <h2 className="text-3xl sm:text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-500">
+        Trending Now
+      </h2>
+      <p className="text-gray-300 text-base sm:text-lg mb-10 max-w-2xl">
+        What's hot right now
+      </p>
 
       <div className="space-y-4">
         {songs.map((song, index) => (

@@ -51,7 +51,7 @@ export default function Recommendation() {
     );
 
   return (
-    <section className="px-4 sm:px-8 md:px-12 lg:px-16 py-16 text-white min-h-screen">
+    <section className="px-4 sm:px-8 md:px-12 lg:px-16  text-white">
       <h2 className="text-3xl sm:text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
         🎧 Top Albums by Cher
       </h2>

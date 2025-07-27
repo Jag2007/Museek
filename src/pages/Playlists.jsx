@@ -13,8 +13,8 @@ export default function Playlists() {
     (async () => {
       try {
         const [moodRes, recRes] = await Promise.all([
-          fetch("https://mocki.io/v1/72a1e5f5-e98a-4a1e-89bc-76f6299e9bd2"),
-          fetch("https://mocki.io/v1/acb7ed6b-40b0-4de8-b097-6df54ad962a1"),
+          fetch("https://mocki.io/v1/29d09cb5-1a41-47d0-809c-5aaf27afec63"),
+          fetch("https://mocki.io/v1/29d09cb5-1a41-47d0-809c-5aaf27afec63"),
         ]);
         if (!moodRes.ok || !recRes.ok) throw new Error("API error");
 
@@ -46,7 +46,6 @@ export default function Playlists() {
     <>
       <Nav />
       <div className="flex flex-col md:flex-row bg-black text-white min-h-screen mt-8">
-        {/* Sidebar */}
         <aside className="w-full md:w-1/4 p-4 space-y-4 bg-gray-900">
           <h2 className="text-lg font-bold mb-2">Your Playlists</h2>
           {[...moods, ...recs].map((item) => (
@@ -77,7 +76,6 @@ export default function Playlists() {
           ))}
         </aside>
 
-        {/* Main Section */}
         <main className="flex-1 p-6">
           <div className="flex items-center space-x-6">
             <img
@@ -91,13 +89,12 @@ export default function Playlists() {
               <p className="mt-2 text-gray-400">
                 {playlist.songs?.length || 0} songs
               </p>
-              <button className="mt-4 bg-green-600 hover:bg-green-700 px-6 py-2 rounded-full font-medium transition">
+              <button className="mt-4 bg-blue-500 hover:bg-green-700 px-6 py-2 rounded-full font-medium transition">
                 ▶ Play
               </button>
             </div>
           </div>
 
-          {/* Songs List */}
           <div className="mt-8 bg-gray-900 rounded-md shadow-inner">
             <table className="w-full">
               <thead className="text-gray-400 uppercase text-sm border-b border-gray-700">
@@ -121,7 +118,6 @@ export default function Playlists() {
             </table>
           </div>
 
-          {/* Suggestions Carousel */}
           <h2 className="text-2xl font-semibold mt-10 mb-4">
             Suggested for you
           </h2>

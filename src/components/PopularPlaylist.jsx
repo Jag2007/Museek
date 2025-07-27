@@ -9,7 +9,7 @@ export default function PopularPlaylist() {
     const fetchPlaylists = async () => {
       try {
         const response = await fetch(
-          "https://mocki.io/v1/212338fc-e551-4695-92c9-ded3ba4f9f22"
+          "https://mocki.io/v1/a1f73634-1271-4af4-939c-bded34204440"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch playlists");
@@ -43,15 +43,22 @@ export default function PopularPlaylist() {
   }
 
   return (
-    <div className="px-6 md:px-16 py-10 text-white bg-[#0f172a]">
+    <div className="px-6 md:px-16 py-10 text-white bg-[#0f172a] mt-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Popular Playlists</h2>
-        <a href="#" className="text-sm text-purple-400 hover:underline">
+        <div>
+          <h2 className="text-3xl sm:text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-500">
+            🫶🏻 Popular Playlists
+          </h2>
+          <p className="text-gray-300 text-base sm:text-lg max-w-2xl">
+            Popular choices of listeners
+          </p>
+        </div>
+        <a href="#" className="text-sm text-blue-400 hover:underline">
           See all
         </a>
       </div>
 
-      <div className="flex overflow-x-auto space-x-6 scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent pb-2">
+      <div className="flex overflow-x-auto space-x-6 scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent pb-2 mt-5">
         {playlists.map((playlist) => (
           <div
             key={playlist.id}
