@@ -81,47 +81,58 @@ export default function Search() {
         </div>
 
         {/* Mood Music Section */}
-        <MoodMusic onSidebarToggle={handleSidebarToggle} />
+        <MoodMusic
+          onSidebarToggle={handleSidebarToggle}
+          searchTerm={searchTerm}
+        />
 
         {/* Top Albums */}
         <section className="px-4 sm:px-6 lg:px-8 pt-16 pb-20">
           <h2 className="text-3xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             🔥 Cher Albums Matching
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredAlbums.map((album) => (
-              <a
-                key={album.id}
-                href={album.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-xl bg-[#1a1e2a] p-5 hover:bg-[#222733] transition-all duration-300 cursor-pointer hover:shadow-2xl hover:scale-105 border border-[#2a3142] hover:border-blue-500/50"
-              >
-                <h3 className="text-lg font-semibold mb-2 truncate group-hover:text-blue-300">
-                  {album.name}
-                </h3>
-                <p className="text-sm text-gray-400 mb-2">
-                  👥 {album.listeners} listeners
-                </p>
-                <p className="text-blue-400 text-sm font-medium group-hover:text-blue-300 flex items-center gap-1">
-                  View on Last.fm
-                  <svg
-                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </p>
-              </a>
-            ))}
-          </div>
+          {searchTerm && filteredAlbums.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-400 text-lg">
+                No albums found matching "{searchTerm}"
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredAlbums.map((album) => (
+                <a
+                  key={album.id}
+                  href={album.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group rounded-xl bg-[#1a1e2a] p-5 hover:bg-[#222733] transition-all duration-300 cursor-pointer hover:shadow-2xl hover:scale-105 border border-[#2a3142] hover:border-blue-500/50"
+                >
+                  <h3 className="text-lg font-semibold mb-2 truncate group-hover:text-blue-300">
+                    {album.name}
+                  </h3>
+                  <p className="text-sm text-gray-400 mb-2">
+                    👥 {album.listeners} listeners
+                  </p>
+                  <p className="text-blue-400 text-sm font-medium group-hover:text-blue-300 flex items-center gap-1">
+                    View on Last.fm
+                    <svg
+                      className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </p>
+                </a>
+              ))}
+            </div>
+          )}
         </section>
         <Footer />
       </div>

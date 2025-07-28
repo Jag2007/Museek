@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FaPlay, FaPause, FaTimes, FaRedo } from "react-icons/fa";
 
-export default function MoodMusic({ onSidebarToggle }) {
+export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
   const [moods, setMoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,6 +32,11 @@ export default function MoodMusic({ onSidebarToggle }) {
 
     fetchMoods();
   }, []);
+
+  // Filter moods based on search term
+  const filteredMoods = moods.filter((mood) =>
+    mood.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handlePlayPause = async (mood, e) => {
     e.stopPropagation();
@@ -99,7 +104,7 @@ export default function MoodMusic({ onSidebarToggle }) {
 
   if (error) {
     return (
-      <div className="text-red-400 px-6 py-24 text-center text-xl flex items-center justify-center gap-2">
+      <div className="text-red-500 px-6 py-12 text-center text-xl flex items-center justify-center gap-2">
         <span className="text-2xl">❌</span> Error: {error}
       </div>
     );
@@ -107,56 +112,55 @@ export default function MoodMusic({ onSidebarToggle }) {
 
   return (
     <>
-      <section className="px-6 md:px-8 py-7 text-white mb-10">
-        <div className="mb-2">
-          <h2 className="text-3xl sm:text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 ml-5">
-            🎤 Browse by Mood
-          </h2>
-          <p className="text-gray-300 text-base sm:text-lg mb-10 max-w-2xl ml-5">
-            Find the perfect playlist for every mood or moment
-          </p>
-        </div>
+      <div className="px-6 md:px-16 py-10 text-white bg-[#0f172a]">
+        <h2 className="text-3xl sm:text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-500">
+          🎤 Mood Music
+        </h2>
+        <p className="text-gray-300 text-base sm:text-lg mb-10 max-w-2xl">
+          Find your perfect mood
+        </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 2xl:grid-cols-4 gap-4 ml-5">
-          {moods.map((mood) => (
-            <div
-              key={mood.id}
-              className="group rounded-xl h-60 p-5 transition-all duration-300 cursor-pointer hover:shadow-2xl hover:scale-105 border border-[#727272] hover:border-blue-300 relative overflow-hidden"
-              style={{
-                backgroundImage: `url(${
-                  mood.img ||
-                  "https://via.placeholder.com/400x300?text=No+Image"
-                })`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-              onClick={() => handleMoodClick(mood)}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-300 to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-
-              {/* Play Button */}
-              <button
-                onClick={(e) => handlePlayPause(mood, e)}
-                className="absolute top-4 right-4 w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-90 group-hover:scale-100"
+        {searchTerm && filteredMoods.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">
+              No moods found matching "{searchTerm}"
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
+            {filteredMoods.map((mood) => (
+              <div
+                key={mood.id}
+                className="rounded-xl h-44 sm:h-48 bg-cover bg-center relative group transition-all duration-300 hover:scale-105 hover:shadow-xl border border-[#2a3142] hover:border-blue-500/50 cursor-pointer"
+                style={{
+                  backgroundImage: `url(${mood.img})`,
+                }}
+                onClick={() => handleMoodClick(mood)}
               >
-                {currentPlayingId === mood.id && isPlaying ? (
-                  <FaPause />
-                ) : (
-                  <FaPlay />
-                )}
-              </button>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#121826]/80 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
 
-              <div className="absolute bottom-5 left-5 z-10">
-                <h3 className="text-lg font-bold text-white drop-shadow-sm group-hover:text-blue-300 transition-colors">
-                  {mood.title}
-                </h3>
-                <p className="text-sm text-gray-300">Feel the vibe 🎶</p>
+                {/* Play Button */}
+                <button
+                  onClick={(e) => handlePlayPause(mood, e)}
+                  className="absolute top-4 right-4 w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-90 group-hover:scale-100"
+                >
+                  {currentPlayingId === mood.id && isPlaying ? (
+                    <FaPause />
+                  ) : (
+                    <FaPlay />
+                  )}
+                </button>
+
+                <div className="absolute bottom-4 left-4">
+                  <h3 className="text-lg font-semibold text-gray-100 group-hover:text-blue-300">
+                    {mood.title}
+                  </h3>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Sidebar */}
       {showSidebar && selectedMood && (
@@ -172,7 +176,6 @@ export default function MoodMusic({ onSidebarToggle }) {
                 <FaTimes size={20} />
               </button>
             </div>
-
             {/* Enlarged Image */}
             <div className="mb-6">
               <img
@@ -184,12 +187,10 @@ export default function MoodMusic({ onSidebarToggle }) {
                 className="w-full h-64 object-cover rounded-lg"
               />
             </div>
-
             {/* Mood Name */}
             <h3 className="text-xl font-bold text-white mb-4">
               {selectedMood.title}
             </h3>
-
             {/* Play Controls */}
             <div className="flex space-x-3 mb-6">
               <button
@@ -208,7 +209,6 @@ export default function MoodMusic({ onSidebarToggle }) {
                   </>
                 )}
               </button>
-
               <button
                 onClick={handleReplay}
                 className="bg-gray-600 hover:bg-gray-700 text-white p-3 rounded-lg transition-colors"
@@ -217,7 +217,6 @@ export default function MoodMusic({ onSidebarToggle }) {
                 <FaRedo />
               </button>
             </div>
-
             {/* Recommendations */}
             <div>
               <h4 className="text-lg font-semibold text-white mb-4">
