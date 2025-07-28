@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function PopularPlaylist() {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -25,6 +27,10 @@ export default function PopularPlaylist() {
 
     fetchPlaylists();
   }, []);
+
+  const handleSeeAll = () => {
+    navigate("/playlists");
+  };
 
   if (loading) {
     return (
@@ -53,9 +59,12 @@ export default function PopularPlaylist() {
             Popular choices of listeners
           </p>
         </div>
-        <a href="#" className="text-sm text-blue-400 hover:underline">
+        <button
+          onClick={handleSeeAll}
+          className="text-sm text-blue-400 hover:underline cursor-pointer"
+        >
           See all
-        </a>
+        </button>
       </div>
 
       <div className="flex overflow-x-auto space-x-6 scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent pb-2 mt-5">

@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-16">
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <div className="bg-pink-500 rounded-full p-2">
+            <div className="bg-blue-500 rounded-full p-2">
               <span className="text-white text-xl font-bold">♥</span>
             </div>
             <h2 className="text-white font-bold text-2xl">Museek</h2>

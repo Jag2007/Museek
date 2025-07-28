@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
@@ -8,6 +8,8 @@ export default function Playlists() {
   const [active, setActive] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(new Audio("/audio.mp3"));
 
   useEffect(() => {
     (async () => {
@@ -31,6 +33,22 @@ export default function Playlists() {
       }
     })();
   }, []);
+
+  const handlePlayPause = async () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.src = "/audio.mp3";
+      audioRef.current.volume = 0.7;
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (err) {
+        console.error("Audio playback error:", err);
+      }
+    }
+  };
 
   if (loading)
     return <div className="text-white text-center p-10">Loading...</div>;
@@ -89,8 +107,11 @@ export default function Playlists() {
               <p className="mt-2 text-gray-400">
                 {playlist.songs?.length || 0} songs
               </p>
-              <button className="mt-4 bg-blue-500 hover:bg-green-700 px-6 py-2 rounded-full font-medium transition">
-                ▶ Play
+              <button
+                onClick={handlePlayPause}
+                className="mt-4 bg-blue-500 hover:bg-green-700 px-6 py-2 rounded-full font-medium transition"
+              >
+                {isPlaying ? "⏸ Pause" : "▶ Play"}
               </button>
             </div>
           </div>

@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { FaPlay, FaPause } from "react-icons/fa";
 
 export default function TrendingNow() {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentPlayingId, setCurrentPlayingId] = useState(null);
+  const audioRef = useRef(new Audio("/audio.mp3"));
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -25,6 +29,31 @@ export default function TrendingNow() {
 
     fetchSongs();
   }, []);
+
+  const handlePlayPause = async (songId) => {
+    if (currentPlayingId === songId && isPlaying) {
+      // Pause current song
+      audioRef.current.pause();
+      setIsPlaying(false);
+      setCurrentPlayingId(null);
+    } else {
+      // Stop any currently playing song
+      if (isPlaying) {
+        audioRef.current.pause();
+      }
+
+      // Play new song
+      audioRef.current.src = "/audio.mp3";
+      audioRef.current.volume = 0.7;
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+        setCurrentPlayingId(songId);
+      } catch (err) {
+        console.error("Audio playback error:", err);
+      }
+    }
+  };
 
   if (loading)
     return (
@@ -53,7 +82,7 @@ export default function TrendingNow() {
         {songs.map((song, index) => (
           <div
             key={index}
-            className="flex items-center justify-between hover:bg-gray-800 p-2 rounded-lg transition"
+            className="flex items-center justify-between hover:bg-gray-800 p-2 rounded-lg transition group"
           >
             <div className="flex items-center gap-4">
               <img
@@ -69,6 +98,16 @@ export default function TrendingNow() {
 
             <div className="flex items-center gap-6 text-sm text-gray-400">
               <span>{song.time}</span>
+              <button
+                onClick={() => handlePlayPause(index)}
+                className="w-8 h-8 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
+              >
+                {currentPlayingId === index && isPlaying ? (
+                  <FaPause size={12} />
+                ) : (
+                  <FaPlay size={12} />
+                )}
+              </button>
               <button className="hover:text-white">♡</button>
               <button className="hover:text-white">＋</button>
             </div>

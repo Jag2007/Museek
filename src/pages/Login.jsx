@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import StarfieldBackground from "../components/StarfieldBackground";
 import { auth, provider } from "../firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import Notification from "../components/Notification";
 
 export default function Login() {
   const navi = useNavigate();
@@ -11,6 +12,8 @@ export default function Login() {
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   async function handleLogin() {
     setError("");
@@ -21,8 +24,11 @@ export default function Login() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, pass);
-      alert("Login successful 🎉");
-      navi("/home");
+      setNotificationMessage("Login successful! 🎉");
+      setShowNotification(true);
+      setTimeout(() => {
+        navi("/home");
+      }, 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -34,9 +40,14 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await signInWithPopup(auth, provider);
-      alert("Login successful 🎉");
-      navi("/home");
+      const result = await signInWithPopup(auth, provider);
+      setNotificationMessage(
+        `Welcome, ${result.user.displayName || result.user.email}! 🎉`
+      );
+      setShowNotification(true);
+      setTimeout(() => {
+        navi("/home");
+      }, 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -47,6 +58,12 @@ export default function Login() {
   return (
     <>
       <StarfieldBackground />
+      <Notification
+        message={notificationMessage}
+        type="success"
+        isVisible={showNotification}
+        onClose={() => setShowNotification(false)}
+      />
       <div className="min-h-screen flex items-center justify-center text-white px-4 sm:px-6 lg:px-8">
         <div className="bg-[#1a1e2a] p-8 sm:p-10 lg:p-12 rounded-2xl w-full max-w-lg z-10 shadow-2xl border border-[#2a3142] hover:border-blue-500/20 transition-all duration-300">
           <h1 className="text-4xl sm:text-4xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight">

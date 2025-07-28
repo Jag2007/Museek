@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import Notification from "../components/Notification";
 
 export default function Signin() {
   const navi = useNavigate();
@@ -17,6 +18,8 @@ export default function Signin() {
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   async function handleSignup() {
     setError("");
@@ -32,8 +35,11 @@ export default function Signin() {
         pass
       );
       await updateProfile(userCredential.user, { displayName: name });
-      alert("Signup successful 🎉");
-      navi("/home");
+      setNotificationMessage("Signup successful! Welcome to Museek! 🎉");
+      setShowNotification(true);
+      setTimeout(() => {
+        navi("/home");
+      }, 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -46,9 +52,14 @@ export default function Signin() {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      alert("Signup successful 🎉");
-      navi("/home");
+      const result = await signInWithPopup(auth, provider);
+      setNotificationMessage(
+        `Welcome, ${result.user.displayName || result.user.email}! 🎉`
+      );
+      setShowNotification(true);
+      setTimeout(() => {
+        navi("/home");
+      }, 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,6 +70,12 @@ export default function Signin() {
   return (
     <>
       <StarfieldBackground />
+      <Notification
+        message={notificationMessage}
+        type="success"
+        isVisible={showNotification}
+        onClose={() => setShowNotification(false)}
+      />
       <div className="min-h-screen flex items-center justify-center text-white px-4 sm:px-6 lg:px-8">
         <div className="bg-[#1a1e2a] p-8 sm:p-10 lg:p-12 rounded-2xl w-full max-w-lg z-10 shadow-2xl border border-[#2a3142] hover:border-blue-500/20 transition-all duration-300">
           <h1 className="text-4xl sm:text-4xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight">
