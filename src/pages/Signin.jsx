@@ -78,7 +78,7 @@ export default function Signin() {
       />
       <div className="min-h-screen flex items-center justify-center text-white px-4 sm:px-6 lg:px-8">
         <div className="bg-[#1a1e2a] p-8 sm:p-10 lg:p-12 rounded-2xl w-full max-w-lg z-10 shadow-2xl border border-[#2a3142] hover:border-blue-500/20 transition-all duration-300">
-          <h1 className="text-4xl sm:text-4xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight">
+          <h1 className="text-4xl sm:text-4xl font-extrabold text-center mb-8 text-blue-500 tracking-tight">
             Sign Up for Museek
           </h1>
           {error && (
@@ -124,7 +124,7 @@ export default function Signin() {
           />
           <button
             onClick={handleSignup}
-            className="w-full p-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold text-lg hover:from-blue-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full p-4 rounded-lg bg-blue-500 text-white font-semibold text-lg hover:bg-blue-600 hover:shadow-lg transition-all duration-300 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-blue-400"
             disabled={loading}
           >
             {loading ? "Signing Up..." : "Sign Up"}
