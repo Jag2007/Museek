@@ -6,7 +6,7 @@ import Nav from "../components/Nav";
 import PopularPlaylist from "../components/PopularPlaylist";
 import Recommendation from "../components/Recommendation";
 import TrendingNow from "../components/TrendingNow";
-
+import StarfieldBackground from "../components/StarfieldBackground";
 export default function Home() {
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -16,6 +16,7 @@ export default function Home() {
 
   return (
     <div>
+      <StarfieldBackground />
       <Nav />
       <div
         className={`transition-all duration-300 ${showSidebar ? "mr-80" : ""}`}

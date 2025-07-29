@@ -32,17 +32,14 @@ export default function TrendingNow() {
 
   const handlePlayPause = async (songId) => {
     if (currentPlayingId === songId && isPlaying) {
-      // Pause current song
       audioRef.current.pause();
       setIsPlaying(false);
       setCurrentPlayingId(null);
     } else {
-      // Stop any currently playing song
       if (isPlaying) {
         audioRef.current.pause();
       }
 
-      // Play new song
       audioRef.current.src = "/audio.mp3";
       audioRef.current.volume = 0.7;
       try {

@@ -70,7 +70,7 @@ export default function Search() {
       <div
         className={`transition-all duration-300 ${showSidebar ? "mr-80" : ""}`}
       >
-        <div className="px-4 sm:px-6 lg:px-8 pt-10">
+        <div className="px-4 sm:px-6 lg:px-8 pt-10 pb-2">
           <input
             type="text"
             placeholder="Search moods or albums..."
@@ -80,13 +80,11 @@ export default function Search() {
           />
         </div>
 
-        {/* Mood Music Section */}
         <MoodMusic
           onSidebarToggle={handleSidebarToggle}
           searchTerm={searchTerm}
         />
 
-        {/* Top Albums */}
         <section className="px-4 sm:px-6 lg:px-8 pt-16 pb-20">
           <h2 className="text-3xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             🔥 Cher Albums Matching
