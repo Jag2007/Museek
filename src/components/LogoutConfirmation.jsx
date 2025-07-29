@@ -7,7 +7,6 @@ export default function LogoutConfirmation({ isVisible, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 backdrop-blur-md bg-black/20 flex items-center justify-center z-50">
       <div className="bg-gradient-to-br from-[#1a1e2a] via-[#1e2330] to-[#1a1e2a] rounded-2xl p-6 w-full max-w-md mx-4 border border-[#2a3142] shadow-2xl relative overflow-hidden">
-        {/* Animated background elements */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-2xl"></div>
         <div className="absolute -top-10 -right-10 w-20 h-20 bg-blue-500/10 rounded-full blur-xl"></div>
         <div className="absolute -bottom-10 -left-10 w-16 h-16 bg-purple-500/10 rounded-full blur-xl"></div>
