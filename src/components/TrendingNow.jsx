@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FaPlay, FaPause } from "react-icons/fa";
+import { useMusicPlayer } from "../contexts/MusicPlayerContext";
 
 export default function TrendingNow() {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentPlayingId, setCurrentPlayingId] = useState(null);
-  const audioRef = useRef(new Audio("/audio.mp3"));
+  const { playSong, currentSong, isPlaying } = useMusicPlayer();
 
   useEffect(() => {
     // Static data for trending songs
@@ -17,30 +16,35 @@ export default function TrendingNow() {
         title: "Espresso",
         artist: "Sabrina Carpenter",
         time: "2:55",
+        music: "/audio.mp3",
       },
       {
         img: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT7qCGuSNZwtVMgstLYYHY4YiQcrgL99VZtdwggDEvWUFfe25wa-JPselCzjF7y5cuu8p0Q-x1e7RxzpNf_XZaahw",
         title: "I Had Some Help",
         artist: "Post Malone, Morgan Wallen",
         time: "3:44",
+        music: "/audio.mp3",
       },
       {
         img: "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQQsaL6nLiqqlkEGDwkIGv75G-3auflf4qkH9wgY-KwGL4mZa1i0Ik05PtxXWC6bbmpRbsQbaBSTL0Ra1w",
         title: "Not Like Us",
         artist: "Kendrick Lamar",
         time: "4:31",
+        music: "/audio.mp3",
       },
       {
         img: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTot_2nt2IYzwGxAWxfAjyKgVpySMWB5wqYRBrOUH_lxG0xBHO52fKJz584EXEZFjmGhfCz8n8s-yakaISpgJ2PkQ",
         title: "Birds of a Feather",
         artist: "Billie Eilish",
         time: "3:16",
+        music: "/audio.mp3",
       },
       {
         img: "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-560w,f_auto,q_auto:best/rockcms/2025-02/250202-chappell-roan-ew-942p-a054b1.jpg",
         title: "Good Luck, Babe!",
         artist: "Chappell Roan",
         time: "4:09",
+        music: "/audio.mp3",
       },
     ];
 
@@ -53,26 +57,15 @@ export default function TrendingNow() {
     }
   }, []);
 
-  const handlePlayPause = async (songId) => {
-    if (currentPlayingId === songId && isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-      setCurrentPlayingId(null);
-    } else {
-      if (isPlaying) {
-        audioRef.current.pause();
-      }
-
-      audioRef.current.src = "/audio.mp3";
-      audioRef.current.volume = 0.7;
-      try {
-        await audioRef.current.play();
-        setIsPlaying(true);
-        setCurrentPlayingId(songId);
-      } catch (err) {
-        console.error("Audio playback error:", err);
-      }
-    }
+  const handlePlayPause = async (song) => {
+    const songWithImage = {
+      ...song,
+      title: song.title,
+      artist: song.artist,
+      music: song.music,
+      img: song.img,
+    };
+    playSong(songWithImage);
   };
 
   if (loading)
@@ -123,10 +116,13 @@ export default function TrendingNow() {
             <div className="flex items-center gap-6 text-sm text-gray-400">
               <span>{song.time}</span>
               <button
-                onClick={() => handlePlayPause(index)}
+                onClick={() => handlePlayPause(song)}
                 className="w-8 h-8 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
               >
-                {currentPlayingId === index && isPlaying ? (
+                {currentSong &&
+                currentSong.title === song.title &&
+                currentSong.artist === song.artist &&
+                isPlaying ? (
                   <FaPause size={12} />
                 ) : (
                   <FaPlay size={12} />

@@ -1,15 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlay, FaPause, FaTimes, FaRedo } from "react-icons/fa";
+import { useMusicPlayer } from "../contexts/MusicPlayerContext";
 
 export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
   const [moods, setMoods] = useState([]);
   const [selectedMood, setSelectedMood] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
-  const audioRef = useRef(new Audio("/audio.mp3"));
+  const { playSong, currentSong, isPlaying } = useMusicPlayer();
 
   useEffect(() => {
     // Static data for mood music
@@ -101,32 +100,14 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
 
   const playPause = async (mood, e) => {
     e.stopPropagation();
-    const same = currentId === mood.id;
-    audioRef.current.pause();
-    if (!same) {
-      audioRef.current.src = mood.music;
-      audioRef.current.volume = 0.5;
-      try {
-        await audioRef.current.play();
-        setCurrentId(mood.id);
-        setIsPlaying(true);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      setCurrentId(null);
-      setIsPlaying(false);
-    }
-  };
-
-  const handleReplay = async () => {
-    audioRef.current.currentTime = 0;
-    try {
-      await audioRef.current.play();
-      setIsPlaying(true);
-    } catch (err) {
-      console.error(err);
-    }
+    const songWithImage = {
+      ...mood,
+      title: mood.title,
+      artist: mood.artist,
+      music: mood.music,
+      img: mood.img,
+    };
+    playSong(songWithImage);
   };
 
   const openSidebar = (mood) => {
@@ -180,7 +161,10 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
                   onClick={(e) => playPause(mood, e)}
                   className="absolute top-4 right-4 w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100"
                 >
-                  {currentId === mood.id && isPlaying ? (
+                  {currentSong &&
+                  currentSong.title === mood.title &&
+                  currentSong.artist === mood.artist &&
+                  isPlaying ? (
                     <FaPause />
                   ) : (
                     <FaPlay />
@@ -226,7 +210,10 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
                 onClick={(e) => playPause(selectedMood, e)}
                 className="flex-1 bg-blue-500 hover:bg-blue-600 py-3 rounded-lg flex items-center justify-center gap-2"
               >
-                {currentId === selectedMood.id && isPlaying ? (
+                {currentSong &&
+                currentSong.title === selectedMood.title &&
+                currentSong.artist === selectedMood.artist &&
+                isPlaying ? (
                   <>
                     <FaPause />
                     <span>Pause</span>
@@ -237,12 +224,6 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
                     <span>Play</span>
                   </>
                 )}
-              </button>
-              <button
-                onClick={handleReplay}
-                className="bg-gray-600 hover:bg-gray-700 p-3 rounded-lg"
-              >
-                <FaRedo />
               </button>
             </div>
 

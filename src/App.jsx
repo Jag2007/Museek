@@ -7,20 +7,25 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import Playlists from "./pages/Playlists";
+import { MusicPlayerProvider } from "./contexts/MusicPlayerContext";
+import BottomPlayer from "./components/BottomPlayer";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signin />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/playlists" element={<Playlists />} />
-      </Routes>
-    </BrowserRouter>
+    <MusicPlayerProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signin />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/playlists" element={<Playlists />} />
+        </Routes>
+        <BottomPlayer />
+      </BrowserRouter>
+    </MusicPlayerProvider>
   );
 }
 

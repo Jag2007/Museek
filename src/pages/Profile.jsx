@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { useMusicPlayer } from "../contexts/MusicPlayerContext";
 
 export default function Profile() {
   const [moods, setMoods] = useState([]);
   const [recs, setRecs] = useState([]);
   const [artists, setArtists] = useState([]);
   const [tab, setTab] = useState("Overview");
-  const navigate = useNavigate();
+  const { playSong } = useMusicPlayer();
 
   useEffect(() => {
     // Static data for profile
@@ -223,7 +223,15 @@ export default function Profile() {
   const recent = recs.slice(0, 6);
 
   const handleRecentClick = (item) => {
-    navigate("/playlists", { state: { selected: item } });
+    // Create a sample song for the playlist
+    const sampleSong = {
+      title: item.title,
+      artist: item.artist || "Various Artists",
+      music: "/audio.mp3",
+      img: item.img,
+    };
+
+    playSong(sampleSong);
   };
 
   return (

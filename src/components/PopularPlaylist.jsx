@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMusicPlayer } from "../contexts/MusicPlayerContext";
 
 export default function PopularPlaylist() {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [clickedPlaylist, setClickedPlaylist] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const navigate = useNavigate();
+  const { playSong, currentSong, isPlaying } = useMusicPlayer();
 
   useEffect(() => {
     // Static data for popular playlists
@@ -65,15 +66,21 @@ export default function PopularPlaylist() {
 
   const handlePlaylistClick = (playlist) => {
     setClickedPlaylist(playlist.id);
-    setIsPlaying(!isPlaying);
+
+    // Create a sample song for the playlist
+    const sampleSong = {
+      title: playlist.title,
+      artist: "Various Artists",
+      music: "/audio.mp3",
+      img: playlist.img,
+    };
+
+    playSong(sampleSong);
 
     // Add visual feedback with a timeout
     setTimeout(() => {
       setClickedPlaylist(null);
     }, 2000);
-
-    // You can add actual audio playback or navigation logic here
-    console.log("Playing playlist:", playlist.title);
   };
 
   if (loading) {
@@ -136,7 +143,9 @@ export default function PopularPlaylist() {
               {/* Overlay with play button */}
               <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-lg">
-                  {clickedPlaylist === playlist.id && isPlaying ? (
+                  {currentSong &&
+                  currentSong.title === playlist.title &&
+                  isPlaying ? (
                     <div className="w-2 h-2 bg-white rounded-sm"></div>
                   ) : (
                     <div className="w-0 h-0 border-l-[4px] border-l-white border-t-[3px] border-t-transparent border-b-[3px] border-b-transparent ml-1"></div>
@@ -148,21 +157,27 @@ export default function PopularPlaylist() {
               {clickedPlaylist === playlist.id && (
                 <div className="absolute inset-0 bg-blue-500/20 flex items-center justify-center">
                   <div className="text-white font-bold text-xs animate-pulse">
-                    {isPlaying ? "Playing..." : "Paused"}
+                    {currentSong &&
+                    currentSong.title === playlist.title &&
+                    isPlaying
+                      ? "Playing..."
+                      : "Paused"}
                   </div>
                 </div>
               )}
 
               {/* Playing indicator */}
-              {clickedPlaylist === playlist.id && isPlaying && (
-                <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-              )}
+              {currentSong &&
+                currentSong.title === playlist.title &&
+                isPlaying && (
+                  <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                )}
             </div>
 
             <div className="mt-2">
               <h3
                 className={`text-xs font-semibold truncate transition-colors ${
-                  clickedPlaylist === playlist.id
+                  currentSong && currentSong.title === playlist.title
                     ? "text-blue-400"
                     : "group-hover:text-blue-300"
                 }`}
@@ -172,7 +187,7 @@ export default function PopularPlaylist() {
               <p className="text-xs text-gray-400">{playlist.songs} songs</p>
 
               {/* Status indicator */}
-              {clickedPlaylist === playlist.id && (
+              {currentSong && currentSong.title === playlist.title && (
                 <p className="text-xs text-blue-400 mt-1 animate-pulse">
                   {isPlaying ? "Now Playing" : "Click to Play"}
                 </p>
