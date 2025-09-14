@@ -12,11 +12,87 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
   const audioRef = useRef(new Audio("/audio.mp3"));
 
   useEffect(() => {
-    fetch("https://mocki.io/v1/a1f73634-1271-4af4-939c-bded34204440")
-      .then((res) => res.json())
-      .then(setMoods)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    // Static data for mood music
+    const musicData = [
+      {
+        id: "1",
+        title: "Kesariya",
+        artist: "Arijit Singh",
+        img: "https://in.bmscdn.com/iedb/artist/images/website/poster/large/arijit-singh-1048083-24-03-2017-18-02-00.jpg",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      },
+      {
+        id: "2",
+        title: "Chaleya",
+        artist: "Shilpa Rao",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQy2dz4Is-u0gveo-GkrYOaFYbfW2xVT4Bjg&s",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      },
+      {
+        id: "3",
+        title: "Pasoori",
+        artist: "Ali Sethi",
+        img: "https://www.beatcurry.com/wp-content/uploads/2021/12/Ali-Sethi-Thumbnail.jpg",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+      },
+      {
+        id: "4",
+        title: "Ranjha",
+        artist: "B Praak",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfngW7SHaWq50VILST2ql5FVgfQnJTPLN38g&s",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+      },
+      {
+        id: "5",
+        title: "Makhna",
+        artist: "Tanishk Bagchi",
+        img: "https://cinetown.s3.ap-south-1.amazonaws.com/people/profile_img/1703164333.jpeg",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+      },
+      {
+        id: "6",
+        title: "Excuses",
+        artist: "AP Dhillon",
+        img: "https://imagesvs.oneindia.com/webp/img/2024/09/ap-dhillon-1725280142.jpg",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+      },
+      {
+        id: "7",
+        title: "Lehanga",
+        artist: "Jass Manak",
+        img: "https://cdn-images.dzcdn.net/images/artist/4844200d1bbd953d966fbb906bbf2340/1900x1900-000000-80-0-0.jpg",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+      },
+      {
+        id: "8",
+        title: "Naatu Naatu",
+        artist: "Rahul Sipligunj",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP4kqmH-jgB7VGhRTfGfdnkOmfJrnon0jZBQ&s",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+      },
+      {
+        id: "9",
+        title: "Samajavaragamana",
+        artist: "Sid Sriram",
+        img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Sid_Sriram.jpg",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+      },
+      {
+        id: "10",
+        title: "Vaaste",
+        artist: "Dhvani Bhanushali",
+        img: "https://assets.entrepreneur.com/images/misc/1584192010_4.jpg?width=1000",
+        music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+      },
+    ];
+
+    try {
+      setMoods(musicData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const filtered = moods.filter((mood) =>
@@ -28,7 +104,7 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
     const same = currentId === mood.id;
     audioRef.current.pause();
     if (!same) {
-      audioRef.current.src = "/audio.mp3";
+      audioRef.current.src = mood.music;
       audioRef.current.volume = 0.5;
       try {
         await audioRef.current.play();
@@ -138,9 +214,12 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
               className="w-full h-60 object-cover rounded-lg mb-6"
             />
 
-            <h3 className="text-white text-lg font-bold mb-4">
+            <h3 className="text-white text-lg font-bold mb-2">
               {selectedMood.title}
             </h3>
+            <p className="text-gray-400 text-sm mb-4">
+              by {selectedMood.artist}
+            </p>
 
             <div className="flex space-x-3 mb-6">
               <button
@@ -185,7 +264,7 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
                     />
                     <div>
                       <h5 className="text-white font-medium">{mood.title}</h5>
-                      <p className="text-gray-400 text-sm">Similar vibe</p>
+                      <p className="text-gray-400 text-sm">{mood.artist}</p>
                     </div>
                   </div>
                 ))}

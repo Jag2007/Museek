@@ -12,26 +12,83 @@ export default function Playlists() {
   const audioRef = useRef(new Audio("/audio.mp3"));
 
   useEffect(() => {
-    (async () => {
-      try {
-        const [moodRes, recRes] = await Promise.all([
-          fetch("https://mocki.io/v1/29d09cb5-1a41-47d0-809c-5aaf27afec63"),
-          fetch("https://mocki.io/v1/29d09cb5-1a41-47d0-809c-5aaf27afec63"),
-        ]);
-        if (!moodRes.ok || !recRes.ok) throw new Error("API error");
+    // Static data for playlists
+    const playlistData = [
+      {
+        id: 1,
+        title: "Late Night Chill",
+        img: "https://i.ytimg.com/vi/9r8VtP5kdoo/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGEkgPihyMA8=&rs=AOn4CLC4fktL4paNiSOpIcHrTmYD87dMBQ",
+        songs: [
+          { title: "After Dark", artist: "Mr.Kitty", time: "4:20" },
+          { title: "Nightcall", artist: "Kavinsky", time: "4:30" },
+          { title: "Sunset Lover", artist: "Petit Biscuit", time: "3:55" },
+        ],
+      },
+      {
+        id: 2,
+        title: "Moody Love",
+        img: "https://cdn.esquireindia.co.in/article/-2024-12-04T11%3A09%3A49.258Z-LEAD_GettyImages-1283162436.jpg",
+        songs: [
+          { title: "Earned It", artist: "The Weeknd", time: "4:38" },
+          { title: "Ivy", artist: "Frank Ocean", time: "4:09" },
+          { title: "All I Want", artist: "Kodaline", time: "5:05" },
+        ],
+      },
+      {
+        id: 3,
+        title: "Telugu Romance",
+        img: "https://images.tv9telugu.com/wp-content/uploads/2024/09/romantic-movie-1.jpg",
+        songs: [
+          { title: "Inkem Inkem", artist: "Sid Sriram", time: "3:51" },
+          { title: "Samajavaragamana", artist: "Sid Sriram", time: "3:40" },
+          { title: "Neeli Neeli Aakasam", artist: "Sid Sriram", time: "4:18" },
+        ],
+      },
+      {
+        id: 4,
+        title: "Dreamy Afternoons",
+        img: "https://images.pexels.com/photos/2747446/pexels-photo-2747446.jpeg?cs=srgb&dl=pexels-wolfgang-1002140-2747446.jpg&fm=jpg",
+        songs: [
+          { title: "Daydream", artist: "Lily Meola", time: "3:42" },
+          { title: "Golden Hour", artist: "JVKE", time: "3:29" },
+          { title: "Bloom", artist: "The Paper Kites", time: "3:20" },
+        ],
+      },
+      {
+        id: 5,
+        title: "Focus Vibes",
+        img: "https://photographers.lightrocket.com/_next/image?url=%2Fimg%2Fblog%2Ffocus-on-focus-between-quality-and-creativity%2FFocusOnFocus_Cover_Image_lIghtRocket_Blog-1536x1024.webp&w=3840&q=75",
+        songs: [
+          { title: "Intro", artist: "M83", time: "5:40" },
+          { title: "Weightless", artist: "Marconi Union", time: "8:00" },
+          { title: "Experience", artist: "Ludovico Einaudi", time: "5:30" },
+        ],
+      },
+      {
+        id: 6,
+        title: "90s Nostalgia",
+        img: "https://d1u6g1e1nisfhs.cloudfront.net/wp-content/uploads/articles-90s-look-sq.jpg",
+        songs: [
+          { title: "Wonderwall", artist: "Oasis", time: "4:18" },
+          {
+            title: "I Want It That Way",
+            artist: "Backstreet Boys",
+            time: "3:33",
+          },
+          { title: "My Heart Will Go On", artist: "Celine Dion", time: "4:40" },
+        ],
+      },
+    ];
 
-        const moodJson = await moodRes.json();
-        const recJson = await recRes.json();
-
-        setMoods(moodJson);
-        setRecs(recJson);
-        setActive({ ...moodJson[0], type: "mood" });
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    try {
+      setMoods(playlistData);
+      setRecs(playlistData);
+      setActive({ ...playlistData[0], type: "mood" });
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const handlePlayPause = async () => {
@@ -83,6 +140,10 @@ export default function Playlists() {
                 src={item.img}
                 alt={item.title}
                 className="w-10 h-10 object-cover rounded"
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/40x40/1a1e2a/ffffff?text=No+Image";
+                }}
               />
               <div>
                 <p className="font-medium">{item.title}</p>
@@ -100,6 +161,10 @@ export default function Playlists() {
               src={active.img}
               alt={active.title}
               className="w-48 h-48 object-cover shadow-lg rounded-md"
+              onError={(e) => {
+                e.target.src =
+                  "https://via.placeholder.com/192x192/1a1e2a/ffffff?text=No+Image";
+              }}
             />
             <div>
               <p className="uppercase text-sm text-gray-400">Playlist</p>
@@ -156,6 +221,10 @@ export default function Playlists() {
                     className="w-full h-40 object-cover rounded mb-3"
                     src={r.img}
                     alt={r.title}
+                    onError={(e) => {
+                      e.target.src =
+                        "https://via.placeholder.com/160x160/1a1e2a/ffffff?text=No+Image";
+                    }}
                   />
                   <p className="font-semibold truncate">{r.title}</p>
                   <p className="text-sm text-gray-400 truncate">

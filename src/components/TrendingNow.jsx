@@ -10,24 +10,47 @@ export default function TrendingNow() {
   const audioRef = useRef(new Audio("/audio.mp3"));
 
   useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const response = await fetch(
-          "https://mocki.io/v1/67658375-141f-4f7b-9fa3-a38bd2797a61"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch trending songs");
-        }
-        const data = await response.json();
-        setSongs(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Static data for trending songs
+    const trendingData = [
+      {
+        img: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQGcJrJCAoX_OsMuTOY8qb0H1SCephmGJRINBptCA7NJE8fTqQpN-NLe-FSZxNNddgGw_-p5QtmAxZ4_1Xk02PsXQ",
+        title: "Espresso",
+        artist: "Sabrina Carpenter",
+        time: "2:55",
+      },
+      {
+        img: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT7qCGuSNZwtVMgstLYYHY4YiQcrgL99VZtdwggDEvWUFfe25wa-JPselCzjF7y5cuu8p0Q-x1e7RxzpNf_XZaahw",
+        title: "I Had Some Help",
+        artist: "Post Malone, Morgan Wallen",
+        time: "3:44",
+      },
+      {
+        img: "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQQsaL6nLiqqlkEGDwkIGv75G-3auflf4qkH9wgY-KwGL4mZa1i0Ik05PtxXWC6bbmpRbsQbaBSTL0Ra1w",
+        title: "Not Like Us",
+        artist: "Kendrick Lamar",
+        time: "4:31",
+      },
+      {
+        img: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTot_2nt2IYzwGxAWxfAjyKgVpySMWB5wqYRBrOUH_lxG0xBHO52fKJz584EXEZFjmGhfCz8n8s-yakaISpgJ2PkQ",
+        title: "Birds of a Feather",
+        artist: "Billie Eilish",
+        time: "3:16",
+      },
+      {
+        img: "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-560w,f_auto,q_auto:best/rockcms/2025-02/250202-chappell-roan-ew-942p-a054b1.jpg",
+        title: "Good Luck, Babe!",
+        artist: "Chappell Roan",
+        time: "4:09",
+      },
+    ];
 
-    fetchSongs();
+    try {
+      setSongs(trendingData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const handlePlayPause = async (songId) => {
@@ -86,6 +109,10 @@ export default function TrendingNow() {
                 src={song.img}
                 alt={song.title}
                 className="w-12 h-12 rounded-md object-cover"
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/48x48/1a1e2a/ffffff?text=No+Image";
+                }}
               />
               <div>
                 <h3 className="font-semibold">{song.title}</h3>
