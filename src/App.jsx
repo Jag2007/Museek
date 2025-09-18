@@ -9,19 +9,87 @@ import Profile from "./pages/Profile";
 import Playlists from "./pages/Playlists";
 import { MusicPlayerProvider } from "./contexts/MusicPlayerContext";
 import BottomPlayer from "./components/BottomPlayer";
+import RequireAuth from "./components/RequireAuth";
+import ComingSoon from "./pages/ComingSoon";
+import RevisitAnimator from "./components/RevisitAnimator";
 
 function App() {
   return (
     <MusicPlayerProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signin />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/playlists" element={<Playlists />} />
+          <Route
+            path="/"
+            element={
+              <RevisitAnimator path="/">
+                <Main />
+              </RevisitAnimator>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RevisitAnimator path="/login">
+                <Login />
+              </RevisitAnimator>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <RevisitAnimator path="/signup">
+                <Signin />
+              </RevisitAnimator>
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <RequireAuth>
+                <RevisitAnimator path="/home">
+                  <Home />
+                </RevisitAnimator>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <RequireAuth>
+                <RevisitAnimator path="/search">
+                  <Search />
+                </RevisitAnimator>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <RevisitAnimator path="/profile">
+                  <Profile />
+                </RevisitAnimator>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/playlists"
+            element={
+              <RequireAuth>
+                <RevisitAnimator path="/playlists">
+                  <Playlists />
+                </RevisitAnimator>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/coming-soon"
+            element={
+              <RevisitAnimator path="/coming-soon">
+                <ComingSoon />
+              </RevisitAnimator>
+            }
+          />
         </Routes>
         <BottomPlayer />
       </BrowserRouter>

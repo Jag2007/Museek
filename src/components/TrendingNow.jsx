@@ -9,7 +9,6 @@ export default function TrendingNow() {
   const { playSong, currentSong, isPlaying } = useMusicPlayer();
 
   useEffect(() => {
-    // Static data for trending songs
     const trendingData = [
       {
         img: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQGcJrJCAoX_OsMuTOY8qb0H1SCephmGJRINBptCA7NJE8fTqQpN-NLe-FSZxNNddgGw_-p5QtmAxZ4_1Xk02PsXQ",

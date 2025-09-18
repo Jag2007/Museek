@@ -11,7 +11,6 @@ export default function PopularPlaylist() {
   const { playSong, currentSong, isPlaying } = useMusicPlayer();
 
   useEffect(() => {
-    // Static data for popular playlists
     const playlistData = [
       {
         id: "1",
@@ -66,18 +65,13 @@ export default function PopularPlaylist() {
 
   const handlePlaylistClick = (playlist) => {
     setClickedPlaylist(playlist.id);
-
-    // Create a sample song for the playlist
     const sampleSong = {
       title: playlist.title,
       artist: "Various Artists",
       music: "/audio.mp3",
       img: playlist.img,
     };
-
     playSong(sampleSong);
-
-    // Add visual feedback with a timeout
     setTimeout(() => {
       setClickedPlaylist(null);
     }, 2000);
@@ -140,7 +134,6 @@ export default function PopularPlaylist() {
                 }}
               />
 
-              {/* Overlay with play button */}
               <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-lg">
                   {currentSong &&
@@ -152,8 +145,6 @@ export default function PopularPlaylist() {
                   )}
                 </div>
               </div>
-
-              {/* Click feedback overlay */}
               {clickedPlaylist === playlist.id && (
                 <div className="absolute inset-0 bg-blue-500/20 flex items-center justify-center">
                   <div className="text-white font-bold text-xs animate-pulse">
@@ -165,8 +156,6 @@ export default function PopularPlaylist() {
                   </div>
                 </div>
               )}
-
-              {/* Playing indicator */}
               {currentSong &&
                 currentSong.title === playlist.title &&
                 isPlaying && (

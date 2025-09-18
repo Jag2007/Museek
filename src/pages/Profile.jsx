@@ -11,7 +11,6 @@ export default function Profile() {
   const { playSong } = useMusicPlayer();
 
   useEffect(() => {
-    // Static data for profile
     const moodData = [
       {
         id: 1,
@@ -223,7 +222,6 @@ export default function Profile() {
   const recent = recs.slice(0, 6);
 
   const handleRecentClick = (item) => {
-    // Create a sample song for the playlist
     const sampleSong = {
       title: item.title,
       artist: item.artist || "Various Artists",

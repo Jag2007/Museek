@@ -1,6 +1,6 @@
 import { FaHome, FaSearch, FaList, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { FiLogIn, FiMenu, FiX } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -8,6 +8,7 @@ import LogoutConfirmation from "./LogoutConfirmation";
 
 export default function Nav() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,22 +49,48 @@ export default function Nav() {
   };
 
   const handleProfile = () => {
-    navigate("/profile");
+    if (location.pathname === "/profile") {
+      window.dispatchEvent(
+        new CustomEvent("route-revisit", { detail: { path: "/profile" } })
+      );
+    } else {
+      navigate("/profile");
+    }
     setMenuOpen(false);
   };
 
   function handleSearch() {
-    navigate("/search");
+    if (location.pathname === "/search") {
+      window.dispatchEvent(
+        new CustomEvent("route-revisit", { detail: { path: "/search" } })
+      );
+    } else {
+      navigate("/search");
+    }
     setMenuOpen(false);
   }
 
   function handleHome() {
-    navigate("/home");
+    if (!user) {
+      navigate("/login");
+    } else if (location.pathname === "/home") {
+      window.dispatchEvent(
+        new CustomEvent("route-revisit", { detail: { path: "/home" } })
+      );
+    } else {
+      navigate("/home");
+    }
     setMenuOpen(false);
   }
 
   function handlePlaylist() {
-    navigate("/playlists");
+    if (location.pathname === "/playlists") {
+      window.dispatchEvent(
+        new CustomEvent("route-revisit", { detail: { path: "/playlists" } })
+      );
+    } else {
+      navigate("/playlists");
+    }
     setMenuOpen(false);
   }
 

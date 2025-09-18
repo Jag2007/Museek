@@ -18,12 +18,10 @@ export const MusicPlayerProvider = ({ children }) => {
   const audioRef = useRef(new Audio());
 
   const playSong = (song) => {
-    // Stop current song if playing
     if (isPlaying) {
       audioRef.current.pause();
     }
 
-    // Set new song
     setCurrentSong(song);
     audioRef.current.src = song.music || "/audio.mp3";
     audioRef.current.volume = 0.7;
@@ -69,7 +67,6 @@ export const MusicPlayerProvider = ({ children }) => {
     setCurrentSong(null);
   };
 
-  // Update time as song plays
   React.useEffect(() => {
     const audio = audioRef.current;
 

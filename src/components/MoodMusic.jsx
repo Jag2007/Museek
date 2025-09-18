@@ -11,7 +11,6 @@ export default function MoodMusic({ onSidebarToggle, searchTerm = "" }) {
   const { playSong, currentSong, isPlaying } = useMusicPlayer();
 
   useEffect(() => {
-    // Static data for mood music
     const musicData = [
       {
         id: "1",
